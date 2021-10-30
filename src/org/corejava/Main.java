@@ -5,9 +5,9 @@ package org.corejava;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("divide(2,3) = "+divide(2,3));
+        System.out.println("decrement(2,3) = "+decrement(2,3));
     }
-    static float divide(float a, float b) {
-        return a/b;
+    static long decrement(long a, long b) {
+        return a-b;
     }
 }
