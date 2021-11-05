@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class Main {
 
     /**
@@ -7,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Module2");
 
-        //1. Объединить два отсортированных массива
+        //1. Объединить два отсортированных массива. "нужно считать что оба отсортированы, и решить за n"
 
         //2. Реверс строки с помощью стека
 
@@ -22,5 +24,14 @@ public class Main {
         //7. Вывести все слова Trie ( префиксное деревое )
 
         //8. Найти симметричные пары в массиве
+    }
+
+    private static void joinTwoSortedArrays() {
+        int[] aray1 = {1,5,8,24,98,99,123};
+        int[] aray2 = {9,56,132,212};
+    }
+
+    private static void revertStringUsingStack(String string) {
+        //Stack
     }
 }
