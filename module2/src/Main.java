@@ -14,6 +14,7 @@ public class Main {
         joinTwoSortedArrays();
 
         //2. Реверс строки с помощью стека
+        revertStringUsingStack("abcdefg");
 
         //3. Реверс первых N элементов очереди
 
@@ -26,6 +27,20 @@ public class Main {
         //7. Вывести все слова Trie ( префиксное деревое )
 
         //8. Найти симметричные пары в массиве
+    }
+
+    //2. Реверс строки с помощью стека
+    private static void revertStringUsingStack(String string) {
+        System.out.println("revertStringUsingStack("+string+")");
+        Stack<String> stack = new Stack();
+        StringBuilder result = new StringBuilder();
+        for(int i = 0; i<string.length();i++) {
+            stack.push(string.substring(i,i+1));
+        }
+        for(int i = 0; i<string.length();i++) {
+            result.append(stack.pop());
+        }
+        System.out.println(result);
     }
 
     private static void joinTwoSortedArrays() {
@@ -68,9 +83,5 @@ public class Main {
             }
         }
         System.out.println(Arrays.toString(resultArray));
-    }
-
-    private static void revertStringUsingStack(String string) {
-        //Stack
     }
 }
