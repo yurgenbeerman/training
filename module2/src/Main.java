@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
 
@@ -17,6 +16,7 @@ public class Main {
         revertStringUsingStack("abcdefg");
 
         //3. Реверс первых N элементов очереди
+        revertFirstNQueueElements(0);
 
         //4. Определение цикла в связанном списке
 
@@ -27,6 +27,33 @@ public class Main {
         //7. Вывести все слова Trie ( префиксное деревое )
 
         //8. Найти симметричные пары в массиве
+    }
+
+    //3
+    private static void revertFirstNQueueElements(int n) {
+        System.out.println("revertFirstNQueueElements("+n+")");
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < 9; i++)
+            queue.add(i);
+        System.out.println("queue = "+queue);
+
+        int queueSize=queue.size();
+        Stack<Integer> stack = new Stack<>();
+        for (int i=0; i<n && i<queueSize; i++) {
+            stack.push(queue.remove());
+        }
+
+        int stackSize=stack.size();
+        Queue<Integer> result = new LinkedList<>();
+        for (int i=0; i<stackSize; i++) {
+            result.add(stack.pop());
+        }
+
+        for (int j=stackSize; j<queueSize; j++) {
+            result.add(queue.remove());
+        }
+
+        System.out.println(result);
     }
 
     //2. Реверс строки с помощью стека
@@ -45,12 +72,13 @@ public class Main {
 
     private static void joinTwoSortedArrays() {
         System.out.println("joinTwoSortedArrays");
-        int[] array1 = {}; //{1,5,8,24,98,99,123};
+        int[] array1 = {9,56,132,212};
+        int[] array2 = {1,5,8,24,98,99,123};
+
         final int length1 = array1.length;
         int posOfMin1 = 0;
         int lastMin1;
 
-        int[] array2 = {}; //{9,56,132,212};
         final int length2 = array2.length;
         int posOfMin2 = 0;
         int lastMin2;
