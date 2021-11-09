@@ -19,6 +19,7 @@ public class Main {
         revertFirstNQueueElements(0);
 
         //4. Определение цикла в связанном списке
+        detectLoopInLinkedList();
 
         //5. Посчитать количество ребер (дуг) в графе
 
@@ -28,8 +29,53 @@ public class Main {
 
         //8. Найти симметричные пары в массиве
     }
+    
+    //4. Определение цикла в связанном списке
+    private static void detectLoopInLinkedList() {
+        System.out.println("\ndetectLoopInLinkedList:");
+        //I have not found native Java LinkedList methods which allow to detect cycle in the LinkedList
+        //let's use Map to create cyclic and none-cyclic "linked lists" without data (data is not required for this exersize)
+        Map<Integer,Integer> linkedList1 = new HashMap<>();
+        Map<Integer,Integer> linkedList2 = new HashMap<>();
+        for (int i=1; i<8; i++) {
+            linkedList1.put(i,i+1);
+            linkedList2.put(i,i+1);
+        }
+        System.out.println("finishing linkedList1");
+        linkedList1.put(8,null);
+        System.out.println("finishing linkedList2");
+        linkedList2.put(8,null);
 
-    //3
+        System.out.println("looping linkedList2");
+        //linkedList2.put(7,1);
+        linkedList2.put(4,2);
+
+        System.out.println("isCircularLinkedList(linkedList1) = "+ isCircularLinkedList(1, linkedList1));
+        System.out.println("isCircularLinkedList(linkedList2) = "+ isCircularLinkedList(1, linkedList2));
+    }
+    private static boolean isCircularLinkedList(Integer head, Map<Integer, Integer> linkedList) {
+        System.out.println("linkedList = "+linkedList);
+        int size = linkedList.size();
+        Set<Integer> set = new HashSet<>();
+        Integer link = linkedList.get(head);
+        int i =0;
+        do {
+            Integer nextElement = linkedList.get(link);
+            if(nextElement==null) {
+                System.out.println("NO loop found. Elements count = "+i);
+                return false;
+            }
+            if(!set.add(nextElement)) {
+                System.out.println("LOOP FOUND. Elements count = "+i);
+                return true;
+            }
+            link = linkedList.get(nextElement);
+            i++;
+        } while (i<size);
+        System.out.println("links count = "+i);
+        return false;
+    }
+    //3. Реверс первых N элементов очереди
     private static void revertFirstNQueueElements(int n) {
         System.out.println("revertFirstNQueueElements("+n+")");
         Queue<Integer> queue = new LinkedList<>();
