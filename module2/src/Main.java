@@ -22,6 +22,7 @@ public class Main {
         detectLoopInLinkedList();
 
         //5. Посчитать количество ребер (дуг) в графе
+        countGrapthEdges();
 
         //6. Найти предков N узла в двоичном дереве
 
@@ -29,7 +30,37 @@ public class Main {
 
         //8. Найти симметричные пары в массиве
     }
-    
+    //5. Посчитать количество ребер (дуг) в графе
+    //used custom structure since there's no Graph in Java. But there are libs for that.
+    private static void countGrapthEdges() {
+        System.out.println("\ncountGrapthEdges");
+
+        //used https://www.baeldung.com/java-graphs
+        AdjacencyGraph adjacencyGraph = new AdjacencyGraph();
+        adjacencyGraph.addVertex("Bob");
+        adjacencyGraph.addVertex("Alice");
+        adjacencyGraph.addVertex("Mark");
+        adjacencyGraph.addVertex("Rusty");
+        adjacencyGraph.addVertex("Maria");
+
+        adjacencyGraph.addDirectAndReverseEdges("Bob", "Alice");
+        adjacencyGraph.addDirectAndReverseEdges("Bob", "Rusty");
+        adjacencyGraph.addDirectAndReverseEdges("Alice", "Mark");
+        adjacencyGraph.addDirectAndReverseEdges("Rusty", "Mark");
+        adjacencyGraph.addDirectAndReverseEdges("Alice", "Maria");
+        adjacencyGraph.addDirectAndReverseEdges("Rusty", "Maria");
+        //6x2 edges added
+
+        /*assert("[Bob, Rusty, Maria, Alice, Mark]".equals(adjacencyGraph.depthFirstTraversal("Bob").toString()));
+        System.out.println("we expect             [Bob, Rusty, Maria, Alice, Mark]");
+        System.out.println("depthFirstTraversal = "+adjacencyGraph.depthFirstTraversal("Bob").toString());
+
+        assert("[Bob, Alice, Rusty, Mark, Maria]".equals(adjacencyGraph.breadthFirstTraversal("Bob").toString()));
+        System.out.println("we expect               [Bob, Alice, Rusty, Mark, Maria]");
+        System.out.println("breadthFirstTraversal = "+adjacencyGraph.breadthFirstTraversal("Bob").toString());*/
+
+        System.out.println("There are "+adjacencyGraph.edgesCount()+" grapth edges");
+    }
     //4. Определение цикла в связанном списке
     private static void detectLoopInLinkedList() {
         System.out.println("\ndetectLoopInLinkedList:");
