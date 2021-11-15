@@ -26,10 +26,31 @@ public class Main {
 
         //6. Найти предков N узла в двоичном дереве
 
-        //7. Вывести все слова Trie ( префиксное деревое )
+        //7. NO NEED TO IMPLEMENT in Java: Вывести все слова Trie ( префиксное деревое )
 
         //8. Найти симметричные пары в массиве
+        findSymmetricPairsInArray();
     }
+
+    private static void findSymmetricPairsInArray() {
+        System.out.println("\nfindSymmetricPairsInArray");
+        String[] array = {"a","b","c","d","b","a","b","d"};
+        // має знайти наступні пари: ab-ba, db-bd
+
+        Map<String,String> pairs = new HashMap<>();
+        for (int i=0; i<array.length-1; i++) {
+            String current = array[i]+array[i+1];
+            for (int j=i+1; j<array.length-1; j++) {
+                String candidate = array[j+1]+array[j];
+                if(current.equals(candidate) && !pairs.containsValue(candidate)) {
+                    String found = array[j]+array[j+1];
+                    pairs.put(current,found);
+                    System.out.println(current+"-"+found);
+                }
+            }
+        }
+    }
+
     //5. Посчитать количество ребер (дуг) в графе
     //used custom structure since there's no Graph in Java. But there are libs for that.
     private static void countGrapthEdges() {
