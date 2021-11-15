@@ -25,6 +25,7 @@ public class Main {
         countGrapthEdges();
 
         //6. Найти предков N узла в двоичном дереве
+        findParensOfBinaryTreeElement();
 
         //7. NO NEED TO IMPLEMENT in Java: Вывести все слова Trie ( префиксное деревое )
 
@@ -32,6 +33,33 @@ public class Main {
         findSymmetricPairsInArray();
     }
 
+    //6. Найти предков N узла в двоичном дереве
+    private static void findParensOfBinaryTreeElement() {
+        //TreeMap keys are organized as red-black binary tree
+        TreeMap<Integer,Integer> tree = new TreeMap<>(); //HashMap will work too.
+        tree.put(1,3);
+        tree.put(2,3);
+        tree.put(4,6);
+        tree.put(5,6);
+        tree.put(3,7);
+        tree.put(6,7);
+        tree.put(7,null);
+        System.out.println("\nfindParensOfBinaryTreeElement\n"+findParens(tree,1));
+    }
+    private static List<Integer> findParens(Map<Integer,Integer> tree, Integer element) {
+        if (element == null) {
+            return null;
+        }
+        List<Integer> result = new ArrayList<>();
+        element = tree.get(element);
+        while (element != null) {
+            result.add(element);
+            element = tree.get(element);
+        };
+        return result;
+    }
+
+    //8. Найти симметричные пары в массиве
     private static void findSymmetricPairsInArray() {
         System.out.println("\nfindSymmetricPairsInArray");
         String[] array = {"a","b","c","d","b","a","b","d"};
