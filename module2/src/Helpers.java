@@ -1,4 +1,6 @@
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -58,5 +60,34 @@ public class Helpers {
             result.append(stack.pop());
         }
         return result.toString();
+    }
+
+    //3. Реверс первых N элементов очереди
+    public static Deque<Integer> revertFirstNQueueElements(Deque<Integer> queue, int n) {
+
+        System.out.println("revertFirstNQueueElements("+queue+", "+n+")");
+        if (n == 0) {
+            System.out.println("result: " + queue);
+            return queue;
+        }
+        if (n > queue.size()) {
+            n = queue.size();
+        }
+        int queueSize=queue.size();
+        for (int i=0; i<n-1 && i<queueSize-1; i++) {
+            for(int j=0; j<n-1 && i<queueSize-1; j++) {
+                queue.addLast(queue.removeFirst());
+            }
+            Integer holder = queue.removeFirst();
+            for(int j=0; j<n-1-i && j<queueSize-1; j++) {
+                queue.addFirst(queue.removeLast());
+            }
+            queue.addFirst(holder);
+            for(int j=0; j<i && j<queueSize-1; j++) {
+                queue.addFirst(queue.removeLast());
+            }
+            //System.out.println("loop: "+i+", queue = "+queue);
+        }
+        return queue;
     }
 }
