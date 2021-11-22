@@ -185,7 +185,7 @@ public class Main {
     //2. Реверс строки с помощью стека
     private static void revertStringUsingStack(String string) {
         System.out.println("revertStringUsingStack("+string+")");
-        Stack<String> stack = new Stack();
+        Stack<String> stack = new Stack<>();  //was new Stack()  -- must use Dequeue
         StringBuilder result = new StringBuilder();
         for(int i = 0; i<string.length();i++) {
             stack.push(string.substring(i,i+1));
@@ -198,7 +198,7 @@ public class Main {
 
     private static void joinTwoSortedArrays() {
         System.out.println("joinTwoSortedArrays");
-        int[] array1 = {9,56,132,212};
+        int[] array1 = {5,9,11,11,56,132,212};
         int[] array2 = {1,5,8,24,98,99,123};
 
         final int length1 = array1.length;
@@ -232,7 +232,7 @@ public class Main {
                     i++;
                     resultArray[i] = array2[posOfMin2];
                     posOfMin1++;
-                    posOfMin1++;
+                    posOfMin2++;
                 }
             }
         }
