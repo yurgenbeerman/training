@@ -16,7 +16,7 @@ public class Main {
         revertStringUsingStack("abcdefg");
 
         //3. Реверс первых N элементов очереди
-        revertFirstNQueueElements(0);
+        revertFirstNQueueElements(10,19);
 
         //4. Определение цикла в связанном списке
         detectLoopInLinkedList();
@@ -156,16 +156,36 @@ public class Main {
         return false;
     }
     //3. Реверс первых N элементов очереди
-    private static void revertFirstNQueueElements(int n) {
-        System.out.println("revertFirstNQueueElements("+n+")");
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < 9; i++)
+    private static void revertFirstNQueueElements(int n, int max) {
+        System.out.println("revertFirstNQueueElements("+n+", "+max+")");
+        Deque<Integer> queue = new ArrayDeque<>();//LinkedList<>();
+        for (int i = 0; i < max; i++)
             queue.add(i);
-        System.out.println("queue = "+queue);
-
+        System.out.println("queue = " + queue);
+        if (n == 0) {
+            System.out.println("result: " + queue);
+            return;
+        }
+        if (n > max) {
+            n = max;
+        }
         int queueSize=queue.size();
-        Stack<Integer> stack = new Stack<>();
-        for (int i=0; i<n && i<queueSize; i++) {
+        for (int i=0; i<n-1 && i<queueSize-1; i++) {
+            for(int j=0; j<n-1 && i<queueSize-1; j++) {
+                queue.addLast(queue.removeFirst());
+            }
+            Integer holder = queue.removeFirst();
+            for(int j=0; j<n-1-i && j<queueSize-1; j++) {
+                queue.addFirst(queue.removeLast());
+            }
+            queue.addFirst(holder);
+            for(int j=0; j<i && j<queueSize-1; j++) {
+                queue.addFirst(queue.removeLast());
+            }
+            //System.out.println("loop: "+i+", queue = "+queue);
+        }
+        System.out.println("result: "+queue);
+        /*for (int i=0; i<n && i<queueSize; i++) {
             stack.push(queue.remove());
         }
 
@@ -179,7 +199,7 @@ public class Main {
             result.add(queue.remove());
         }
 
-        System.out.println(result);
+        System.out.println(result);*/
     }
 
     //2. Реверс строки с помощью стека
