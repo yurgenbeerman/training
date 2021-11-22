@@ -8,18 +8,22 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("Module2");
+        System.out.println("Module2\n");
 
         //1. Объединить два отсортированных массива. "нужно считать что оба отсортированы, и решить за n"
         int[] array1 = {5,9,11,11,56,132,212};
         int[] array2 = {1,5,8,24,98,99,123};
-        System.out.println(Arrays.toString(Helpers.joinTwoSortedArrays(array1,array2)));
+        System.out.println(Arrays.toString(Helpers.joinTwoSortedArrays(array1,array2))+"\n");
 
         //2. Реверс строки с помощью стека
-        revertStringUsingStack("abcdefg");
+        System.out.println(Helpers.revertStringUsingStack("abcdefg")+"\n");
 
         //3. Реверс первых N элементов очереди
-        revertFirstNQueueElements(10,19);
+        int max = 12;
+        Deque<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < max; i++)
+            queue.add(i);
+        System.out.println("result: "+Helpers.revertFirstNQueueElements(queue,5));
 
         //4. NO NEED TO IMPLEMENT in Java: Определение цикла в связанном списке
         //detectLoopInLinkedList();
@@ -36,66 +40,5 @@ public class Main {
         String[] array = {"a","b","c","d","b","a","b","d"};
         // має знайти наступні пари: ab-ba, db-bd
         System.out.println(Helpers.findSymmetricPairsInArray(array));
-    }
-
-    //3. Реверс первых N элементов очереди
-    private static void revertFirstNQueueElements(int n, int max) {
-        System.out.println("revertFirstNQueueElements("+n+", "+max+")");
-        Deque<Integer> queue = new ArrayDeque<>();//LinkedList<>();
-        for (int i = 0; i < max; i++)
-            queue.add(i);
-        System.out.println("queue = " + queue);
-        if (n == 0) {
-            System.out.println("result: " + queue);
-            return;
-        }
-        if (n > max) {
-            n = max;
-        }
-        int queueSize=queue.size();
-        for (int i=0; i<n-1 && i<queueSize-1; i++) {
-            for(int j=0; j<n-1 && i<queueSize-1; j++) {
-                queue.addLast(queue.removeFirst());
-            }
-            Integer holder = queue.removeFirst();
-            for(int j=0; j<n-1-i && j<queueSize-1; j++) {
-                queue.addFirst(queue.removeLast());
-            }
-            queue.addFirst(holder);
-            for(int j=0; j<i && j<queueSize-1; j++) {
-                queue.addFirst(queue.removeLast());
-            }
-            //System.out.println("loop: "+i+", queue = "+queue);
-        }
-        System.out.println("result: "+queue);
-        /*for (int i=0; i<n && i<queueSize; i++) {
-            stack.push(queue.remove());
-        }
-
-        int stackSize=stack.size();
-        Queue<Integer> result = new LinkedList<>();
-        for (int i=0; i<stackSize; i++) {
-            result.add(stack.pop());
-        }
-
-        for (int j=stackSize; j<queueSize; j++) {
-            result.add(queue.remove());
-        }
-
-        System.out.println(result);*/
-    }
-
-    //2. Реверс строки с помощью стека
-    private static void revertStringUsingStack(String string) {
-        System.out.println("revertStringUsingStack("+string+")");
-        Stack<String> stack = new Stack<>();  //was new Stack()  -- must use Dequeue
-        StringBuilder result = new StringBuilder();
-        for(int i = 0; i<string.length();i++) {
-            stack.push(string.substring(i,i+1));
-        }
-        for(int i = 0; i<string.length();i++) {
-            result.append(stack.pop());
-        }
-        System.out.println(result);
     }
 }
