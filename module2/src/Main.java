@@ -18,45 +18,19 @@ public class Main {
         //3. Реверс первых N элементов очереди
         revertFirstNQueueElements(10,19);
 
-        //4. Определение цикла в связанном списке
-        detectLoopInLinkedList();
+        //4. NO NEED TO IMPLEMENT in Java: Определение цикла в связанном списке
+        //detectLoopInLinkedList();
 
-        //5. Посчитать количество ребер (дуг) в графе
-        countGrapthEdges();
+        //5. NO NEED TO IMPLEMENT in Java: Посчитать количество ребер (дуг) в графе
+        //countGrapthEdges();
 
-        //6. Найти предков N узла в двоичном дереве
-        findParensOfBinaryTreeElement();
+        //6. NO NEED TO IMPLEMENT in Java: Найти предков N узла в двоичном дереве
+        //findParensOfBinaryTreeElement();
 
         //7. NO NEED TO IMPLEMENT in Java: Вывести все слова Trie ( префиксное деревое )
 
         //8. Найти симметричные пары в массиве
         findSymmetricPairsInArray();
-    }
-
-    //6. Найти предков N узла в двоичном дереве
-    private static void findParensOfBinaryTreeElement() {
-        //TreeMap keys are organized as red-black binary tree
-        TreeMap<Integer,Integer> tree = new TreeMap<>(); //HashMap will work too.
-        tree.put(1,3);
-        tree.put(2,3);
-        tree.put(4,6);
-        tree.put(5,6);
-        tree.put(3,7);
-        tree.put(6,7);
-        tree.put(7,null);
-        System.out.println("\nfindParensOfBinaryTreeElement\n"+findParens(tree,1));
-    }
-    private static List<Integer> findParens(Map<Integer,Integer> tree, Integer element) {
-        if (element == null) {
-            return null;
-        }
-        List<Integer> result = new ArrayList<>();
-        element = tree.get(element);
-        while (element != null) {
-            result.add(element);
-            element = tree.get(element);
-        };
-        return result;
     }
 
     //8. Найти симметричные пары в массиве
@@ -79,82 +53,6 @@ public class Main {
         }
     }
 
-    //5. Посчитать количество ребер (дуг) в графе
-    //used custom structure since there's no Graph in Java. But there are libs for that.
-    private static void countGrapthEdges() {
-        System.out.println("\ncountGrapthEdges");
-
-        //used https://www.baeldung.com/java-graphs
-        AdjacencyGraph adjacencyGraph = new AdjacencyGraph();
-        adjacencyGraph.addVertex("Bob");
-        adjacencyGraph.addVertex("Alice");
-        adjacencyGraph.addVertex("Mark");
-        adjacencyGraph.addVertex("Rusty");
-        adjacencyGraph.addVertex("Maria");
-
-        adjacencyGraph.addDirectAndReverseEdges("Bob", "Alice");
-        adjacencyGraph.addDirectAndReverseEdges("Bob", "Rusty");
-        adjacencyGraph.addDirectAndReverseEdges("Alice", "Mark");
-        adjacencyGraph.addDirectAndReverseEdges("Rusty", "Mark");
-        adjacencyGraph.addDirectAndReverseEdges("Alice", "Maria");
-        adjacencyGraph.addDirectAndReverseEdges("Rusty", "Maria");
-        //6x2 edges added
-
-        /*assert("[Bob, Rusty, Maria, Alice, Mark]".equals(adjacencyGraph.depthFirstTraversal("Bob").toString()));
-        System.out.println("we expect             [Bob, Rusty, Maria, Alice, Mark]");
-        System.out.println("depthFirstTraversal = "+adjacencyGraph.depthFirstTraversal("Bob").toString());
-
-        assert("[Bob, Alice, Rusty, Mark, Maria]".equals(adjacencyGraph.breadthFirstTraversal("Bob").toString()));
-        System.out.println("we expect               [Bob, Alice, Rusty, Mark, Maria]");
-        System.out.println("breadthFirstTraversal = "+adjacencyGraph.breadthFirstTraversal("Bob").toString());*/
-
-        System.out.println("There are "+adjacencyGraph.edgesCount()+" grapth edges");
-    }
-    //4. Определение цикла в связанном списке
-    private static void detectLoopInLinkedList() {
-        System.out.println("\ndetectLoopInLinkedList:");
-        //I have not found native Java LinkedList methods which allow to detect cycle in the LinkedList
-        //let's use Map to create cyclic and none-cyclic "linked lists" without data (data is not required for this exersize)
-        Map<Integer,Integer> linkedList1 = new HashMap<>();
-        Map<Integer,Integer> linkedList2 = new HashMap<>();
-        for (int i=1; i<8; i++) {
-            linkedList1.put(i,i+1);
-            linkedList2.put(i,i+1);
-        }
-        System.out.println("finishing linkedList1");
-        linkedList1.put(8,null);
-        System.out.println("finishing linkedList2");
-        linkedList2.put(8,null);
-
-        System.out.println("looping linkedList2");
-        //linkedList2.put(7,1);
-        linkedList2.put(4,2);
-
-        System.out.println("isCircularLinkedList(linkedList1) = "+ isCircularLinkedList(1, linkedList1));
-        System.out.println("isCircularLinkedList(linkedList2) = "+ isCircularLinkedList(1, linkedList2));
-    }
-    private static boolean isCircularLinkedList(Integer head, Map<Integer, Integer> linkedList) {
-        System.out.println("linkedList = "+linkedList);
-        int size = linkedList.size();
-        Set<Integer> set = new HashSet<>();
-        Integer link = linkedList.get(head);
-        int i =0;
-        do {
-            Integer nextElement = linkedList.get(link);
-            if(nextElement==null) {
-                System.out.println("NO loop found. Elements count = "+i);
-                return false;
-            }
-            if(!set.add(nextElement)) {
-                System.out.println("LOOP FOUND. Elements count = "+i);
-                return true;
-            }
-            link = linkedList.get(nextElement);
-            i++;
-        } while (i<size);
-        System.out.println("links count = "+i);
-        return false;
-    }
     //3. Реверс первых N элементов очереди
     private static void revertFirstNQueueElements(int n, int max) {
         System.out.println("revertFirstNQueueElements("+n+", "+max+")");
