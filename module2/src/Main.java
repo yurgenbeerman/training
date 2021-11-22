@@ -16,7 +16,7 @@ public class Main {
         System.out.println(Arrays.toString(Helpers.joinTwoSortedArrays(array1,array2)));
 
         //2. Реверс строки с помощью стека
-        revertStringUsingStack("abcdefg");
+        System.out.println(Helpers.revertStringUsingStack("abcdefg"));
 
         //3. Реверс первых N элементов очереди
         revertFirstNQueueElements(10,19);
@@ -101,19 +101,5 @@ public class Main {
         }
 
         System.out.println(result);*/
-    }
-
-    //2. Реверс строки с помощью стека
-    private static void revertStringUsingStack(String string) {
-        System.out.println("revertStringUsingStack("+string+")");
-        Stack<String> stack = new Stack<>();  //was new Stack()  -- must use Dequeue
-        StringBuilder result = new StringBuilder();
-        for(int i = 0; i<string.length();i++) {
-            stack.push(string.substring(i,i+1));
-        }
-        for(int i = 0; i<string.length();i++) {
-            result.append(stack.pop());
-        }
-        System.out.println(result);
     }
 }

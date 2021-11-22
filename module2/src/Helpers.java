@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * Created by yurii.pyvovarenko on 11/22/2021.
@@ -43,5 +44,19 @@ public class Helpers {
             }
         }
         return(resultArray);
+    }
+
+    //2. Реверс строки с помощью стека
+    public static String revertStringUsingStack(String string) {
+        System.out.println("revertStringUsingStack("+string+")");
+        Stack<String> stack = new Stack<>();  //was new Stack()  -- must use Dequeue
+        StringBuilder result = new StringBuilder();
+        for(int i = 0; i<string.length();i++) {
+            stack.push(string.substring(i,i+1));
+        }
+        for(int i = 0; i<string.length();i++) {
+            result.append(stack.pop());
+        }
+        return result.toString();
     }
 }
