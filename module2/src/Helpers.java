@@ -47,15 +47,11 @@ public class Helpers {
     }
 
     //2. Реверс строки с помощью стека
-    public static String revertStringUsingStack(String string) {
-        System.out.println("revertStringUsingStack("+string+")");
-        Stack<String> stack = new Stack<>();  //was new Stack()  -- must use Dequeue
-        StringBuilder result = new StringBuilder();
-        for(int i = 0; i<string.length();i++) {
-            stack.push(string.substring(i,i+1));
-        }
-        for(int i = 0; i<string.length();i++) {
-            result.append(stack.pop());
+    public static String revertStringNotUsingStack(String string) {
+        System.out.println("revertStringNotUsingStack(" + string + ")");
+        StringBuilder result = new StringBuilder("");
+        for (int i = string.length(); i > 0; i--) {
+            result.append(string.substring(i-1, i));
         }
         return result.toString();
     }
