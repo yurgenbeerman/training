@@ -64,6 +64,8 @@ public class MyList<T> implements List<T>, Iterable<T> {
                     return true;
                 }
             }
+        } else {
+            throw new NullPointerException();
         }
         return false;
     }
@@ -75,7 +77,35 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public Iterator iterator() {
-        return null; //TODO----------------------------------------------------
+        Iterator<T> it = new Iterator<T>() {
+
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size && elementData[currentIndex] != null;
+            }
+
+            @Override
+            public T next() {
+                return (T) elementData[currentIndex++];
+            }
+
+            /**
+             * this method is unsafe in multi-threaded cases
+             */
+            @Override
+            public void remove() {
+                if (currentIndex >= size || size < 1) {
+                    throw new IndexOutOfBoundsException();
+                }
+                for (int i = currentIndex; i < size-1; i++) {
+                    elementData[i] = elementData[i+1];
+                }
+                size--;
+            }
+        };
+        return it;
     }
 
     @Override
@@ -258,8 +288,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        //TODO ------------------------------------------------------------
-        return false;
+        return false; //Stanislav said we do not need to implement it
     }
 
     /**
@@ -334,7 +363,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public void add(int index, Object element) {
-
+        return;  //Stanislav said we do not need to implement it
     }
 
     /**
@@ -408,7 +437,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public ListIterator<T> listIterator() {
-        return null;
+        return null; //Stanislav said we do not need to implement it
     }
 
     /**
@@ -428,7 +457,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null;
+        return null; //Stanislav said we do not need to implement it
     }
 
     /**
