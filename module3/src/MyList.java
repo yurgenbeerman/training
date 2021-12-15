@@ -58,16 +58,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean contains(Object o) {
-        if (o != null) {
-            for (int i = 0; i < size; i++) {
-                if (((T) o).equals(this.elementData[i])) {
-                    return true;
-                }
-            }
-        } else {
-            throw new NullPointerException();
-        }
-        return false;
+        return this.indexOf(o) > -1;
     }
 
     /**
@@ -108,6 +99,22 @@ public class MyList<T> implements List<T>, Iterable<T> {
         return it;
     }
 
+    /**
+     * Returns an array containing all of the elements in this list in proper
+     * sequence (from first to last element).
+     *
+     * <p>The returned array will be "safe" in that no references to it are
+     * maintained by this list.  (In other words, this method must
+     * allocate a new array even if this list is backed by an array).
+     * The caller is thus free to modify the returned array.
+     *
+     * <p>This method acts as bridge between array-based and collection-based
+     * APIs.
+     *
+     * @return an array containing all of the elements in this list in proper
+     *         sequence
+     * @see Arrays#asList(Object[])
+     */
     @Override
     public T[] toArray() {
         Object[] result = new Object[size];
@@ -177,38 +184,57 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean remove(Object o) {
-        if (o == null) {
-            return false;
-        }
-
         boolean wasFound = false;
         if (capacity - GROW_FACTOR - DEFAULT_CAPACITY <= size - 1) {
+            //decrease capacity and remove the o
             capacity -= DEFAULT_CAPACITY;
             Object[] result = new Object[capacity];
             for (int i = 0; i < size; i++) {
-                if (!this.elementData[i].equals(o)) { //remove only first found object
-                    if (!wasFound) {
-                        result[i] = this.elementData[i];
+                if (o != null) {
+                    if (!o.equals(this.elementData[i])) { //remove only first found object
+                        if (!wasFound) {
+                            result[i] = this.elementData[i];
+                        } else {
+                            result[i - 1] = this.elementData[i];
+                        }
                     } else {
-                        result[i - 1] = this.elementData[i];
+                        wasFound = true;
                     }
                 } else {
-                    wasFound = true;
+                    if (this.elementData[i] != null) {
+                        if (!wasFound) {
+                            result[i] = null;
+                        } else {
+                            result[i - 1] = null;
+                        }
+                    } else {
+                        wasFound = true;
+                    }
                 }
             }
             this.elementData = result;
         } else {
-            for (int i = 0; i < size; i++) {
-                if (this.elementData[i].equals(o) && !wasFound) { //remove only first found object
-                    if (i < size - 1) {
-                        this.elementData[i] = this.elementData[i + 1];
+            for (int i = 0; i < size && wasFound; i++) {
+                if (o != null) {
+                    if (o.equals(this.elementData[i])) { //remove only first found object
+                        if (i < size - 1) {
+                            this.elementData[i] = this.elementData[i + 1];
+                        }
+                        wasFound = true;
                     }
-                    wasFound = true;
+                } else {
+                    if(this.elementData[i] == null) {
+                        if (i < size - 1) {
+                            this.elementData[i] = this.elementData[i + 1];
+                        }
+                        wasFound = true;
+                    }
                 }
             }
         }
         if (wasFound) {
             size--;
+            this.elementData[size] = null;
             return true;
         }
         return false;
@@ -300,6 +326,9 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public void clear() {
+        for (int i = 0; i < size; i++) {
+            this.elementData[i] = null;
+        }
         this.size = 0;
         this.capacity = DEFAULT_CAPACITY;
     }
@@ -314,10 +343,11 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public T get(int index) {
-        if (index<size) {
+        if (index < size) {
             return (T) this.elementData[index];
+        } else {
+            throw new IndexOutOfBoundsException();
         }
-        return null;
     }
 
     /**
@@ -340,12 +370,13 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public T set(int index, T element) {
-        if (index<size) {
+        if (index < size) {
             T previous = (T) this.elementData[index];
             this.elementData[index] = element;
             return previous;
+        } else {
+            throw new IndexOutOfBoundsException();
         }
-        return null;
     }
 
     /**
@@ -381,7 +412,16 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public T remove(int index) {
-        return null;
+        if (index < 0 || index >= size || size < 1) {
+            throw new IndexOutOfBoundsException(); //we can throw UnsupportedOperationException (or another exception) for case when size < 1
+        }
+        T toReturn = (T) elementData[index];
+        for (int i = index; i < size-1; i++) {
+            elementData[i] = elementData[i+1];
+        }
+        size--;
+        elementData[size] = null;
+        return toReturn;
     }
 
     /**
@@ -403,7 +443,18 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public int indexOf(Object o) {
-        return 0;
+        for(int i = 0; i < size; i++) {
+            if (o != null) {
+                if (o.equals(elementData[i])) {
+                    return i;
+                }
+            } else {
+                if (elementData[i] == null) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     /**
@@ -425,7 +476,18 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        for (int i = size - 1; i > 0; i--) {
+            if (o != null) {
+                if (o.equals(elementData[i])) {
+                    return i;
+                }
+            } else {
+                if (elementData[i] == null) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     /**
@@ -496,7 +558,14 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        if(fromIndex >= toIndex || fromIndex < 0 || toIndex > size-1) {
+            throw new IndexOutOfBoundsException();
+        }
+        List<T> result = new MyList<>();
+        for (int i = fromIndex; i < toIndex; i++) {
+            result.add((T) this.elementData[i]);
+        }
+        return result;
     }
 
     @Override
