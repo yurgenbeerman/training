@@ -123,7 +123,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean add(T e) {
-        if (size >= capacity - GROW_FACTOR) {
+        if (size <= capacity - GROW_FACTOR) {
             capacity += DEFAULT_CAPACITY;
             Object[] result = new Object[capacity];
             for (int i = 0; i < size; i++) {
@@ -289,7 +289,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false; //Stanislav said we do not need to implement it
+        throw new UnsupportedOperationException(); //return false; //Stanislav said we do not need to implement it
     }
 
     /**
@@ -355,21 +355,27 @@ public class MyList<T> implements List<T>, Iterable<T> {
     }
 
     /**
-     * Removes the element at the specified position in this list (optional
-     * operation).  Shifts any subsequent elements to the left (subtracts one
-     * from their indices).  Returns the element that was removed from the
-     * list.
+     * Inserts the specified element at the specified position in this list
+     * (optional operation).  Shifts the element currently at that position
+     * (if any) and any subsequent elements to the right (adds one to their
+     * indices).
      *
-     * @param index the index of the element to be removed
-     * @return the element previously at the specified position
-     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     * @param index index at which the specified element is to be inserted
+     * @param element element to be inserted
+     * @throws UnsupportedOperationException if the <tt>add</tt> operation
      *         is not supported by this list
+     * @throws ClassCastException if the class of the specified element
+     *         prevents it from being added to this list
+     * @throws NullPointerException if the specified element is null and
+     *         this list does not permit null elements
+     * @throws IllegalArgumentException if some property of the specified
+     *         element prevents it from being added to this list
      * @throws IndexOutOfBoundsException if the index is out of range
-     *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
+     *         (<tt>index &lt; 0 || index &gt; size()</tt>)
      */
     @Override
     public void add(int index, Object element) {
-        return;  //Stanislav said we do not need to implement it
+        throw new UnsupportedOperationException();//return;  //Stanislav said we do not need to implement it
     }
 
     /**
@@ -474,7 +480,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public ListIterator<T> listIterator() {
-        return null; //Stanislav said we do not need to implement it
+        throw new UnsupportedOperationException();//return null; //Stanislav said we do not need to implement it
     }
 
     /**
@@ -494,7 +500,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null; //Stanislav said we do not need to implement it
+        throw new UnsupportedOperationException(); //return null; //Stanislav said we do not need to implement it
     }
 
     /**
@@ -533,7 +539,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        if(fromIndex >= toIndex || fromIndex < 0 || toIndex > size-1) {
+        if(fromIndex > toIndex || fromIndex < 0 || toIndex > size-1) {
             throw new IndexOutOfBoundsException();
         }
         List<T> result = new MyList<>();
@@ -719,5 +725,16 @@ public class MyList<T> implements List<T>, Iterable<T> {
         if (a.length > size)
             a[size] = null;
         return a;
+    }
+
+    public String toString() {
+        if (size == 0) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            result.append(elementData[i].toString());
+        }
+        return result.toString();
     }
 }
