@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,7 +41,8 @@ public class Main {
         myList.add(4);
         myList.add(5);
         myList.add(6);
-        myList.add(7);
+        final Integer SEVEN = 7;
+        myList.add(SEVEN);
         myList.add(7);
         myList.add(7);
         myList.add(7);
@@ -49,7 +51,7 @@ public class Main {
         System.out.println(myList);
         System.out.println("myList.size() = " + myList.size());
         //contains
-        System.out.println("myList.contains(5) = " + myList.contains(5));
+        System.out.println("myList.contains(7) = " + myList.contains(7));
         System.out.println("myList.contains(15) = " + myList.contains(15));
 
         System.out.println("iterator:");
@@ -66,19 +68,24 @@ public class Main {
 
         //myList.remove(5); //IndexOutOfBoundsException
         System.out.println("myList.remove(2) = "+myList.remove(2));
+        System.out.println("myList = " + myList);
         System.out.println("myList.remove(new Integer(12)) = "+myList.remove(new Integer(12)));
-        //TODO correct myList implememntation
+        System.out.println("myList.remove(SEVEN) = "+myList.remove(SEVEN));
+        System.out.println("myList.remove(SEVEN) => myList = " + myList);
         System.out.println("myList.remove(new Integer(7)) = "+myList.remove(new Integer(7)));
-        System.out.println("myList.remove(2) => myList = " + myList);
+        System.out.println("myList.remove(new Integer(7)) => myList = " + myList);
 
         System.out.println("myList.indexOf(4) = " + myList.indexOf(4));
         System.out.println("myList.indexOf(7) = " + myList.indexOf(7));
         System.out.println("myList.indexOf(17) = " + myList.indexOf(17));
 
         System.out.println("myList.lastIndexOf(4) = " + myList.lastIndexOf(4));
-        System.out.println("myList.lastIndexOf(7) = " + myList.lastIndexOf(7));
+        System.out.println("myList.lastIndexOf(SEVEN) = " + myList.lastIndexOf(SEVEN));
         System.out.println("myList.lastIndexOf(17) = " + myList.lastIndexOf(17));
 
+        System.out.println("myList before adding two 7 = " + myList);
+        myList.add(7);
+        myList.add(7);
         System.out.println("myList = " + myList);
         //System.out.println("myList.subList(4,2) = " + myList.subList(4,2));//IndexOutOfBoundsException
         //System.out.println("myList.subList(0,7) = " + myList.subList(0,7));//IndexOutOfBoundsException
@@ -87,9 +94,51 @@ public class Main {
         System.out.println("myList.subList(1,3) = " + myList.subList(1,3));
         System.out.println("myList.subList(2,2) = " + myList.subList(2,2));
 
-        //TODO correct myList implememntation
+        //TODO Should I copy SubList subcalss from the ArrayList?
         //the following idiom removes a range of elements from a list:
-        myList.subList(4, 6).clear();
-        System.out.println("myList.subList(4, 6).clear() => myList = " + myList);
+        //myList.subList(4, 6).clear(); //Should I copy SubList subcalss from the ArrayList?
+        //System.out.println("myList.subList(4, 6).clear() => myList = " + myList);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(4);
+        list.add(6);
+        list.add(7);
+        myList.retainAll(list);
+        System.out.println("list = " + list);
+        System.out.println("myList.retainAll(list) => myList = " + myList);
+
+        System.out.println("adding 1,2,3 = ");
+        myList.add(1);
+        myList.add(2);
+        myList.add(3);
+        System.out.println("myList = " + myList);
+
+        myList.removeAll(list);
+        System.out.println("list = " + list);
+        System.out.println("myList.removeAll(list) => myList = " + myList);
+
+        List<Integer> list1 = new ArrayList<>();
+        list1.add(1);
+        list1.add(2);
+        list1.add(3);
+
+        List<Integer> list2 = new ArrayList<>();
+        list2.add(1);
+        list2.add(2);
+        list2.add(4);
+        list2.add(4);
+
+        System.out.println("list1 = " + list1);
+        System.out.println("list2 = " + list2);
+        System.out.println("myList.containsAll(list1) = " + myList.containsAll(list1));
+        System.out.println("myList.containsAll(list2) = " + myList.containsAll(list2));
+
+        System.out.println("myList = " + myList);
+        Object[] array = myList.toArray();
+        System.out.println("array = myList.toArray() = "+ Arrays.toString(array));
+
+        Integer[] integerArray = {};
+        integerArray = myList.toArray(integerArray);
+        System.out.println("integerArray = myList.toArray(integerArray) = "+ Arrays.toString(integerArray));
     }
 }

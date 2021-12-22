@@ -159,58 +159,14 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean remove(Object o) {
-        boolean wasFound = false;
-        if (capacity - GROW_FACTOR - DEFAULT_CAPACITY <= size - 1) {
-            //decrease capacity and remove the o
-            capacity -= DEFAULT_CAPACITY;
-            Object[] result = new Object[capacity];
-            for (int i = 0; i < size; i++) {
-                if (o != null) {
-                    if (!o.equals(this.elementData[i])) { //remove only first found object
-                        if (!wasFound) {
-                            result[i] = this.elementData[i];
-                        } else {
-                            result[i - 1] = this.elementData[i];
-                        }
-                    } else {
-                        wasFound = true;
-                    }
-                } else {
-                    if (this.elementData[i] != null) {
-                        if (!wasFound) {
-                            result[i] = null;
-                        } else {
-                            result[i - 1] = null;
-                        }
-                    } else {
-                        wasFound = true;
-                    }
-                }
+        if (this.indexOf(o) > -1) {
+            Object result = remove(this.indexOf(o));
+            if (o == null) {
+                return true;
             }
-            this.elementData = result;
-        } else {
-            for (int i = 0; i < size && wasFound; i++) {
-                if (o != null) {
-                    if (o.equals(this.elementData[i])) { //remove only first found object
-                        if (i < size - 1) {
-                            this.elementData[i] = this.elementData[i + 1];
-                        }
-                        wasFound = true;
-                    }
-                } else {
-                    if(this.elementData[i] == null) {
-                        if (i < size - 1) {
-                            this.elementData[i] = this.elementData[i + 1];
-                        }
-                        wasFound = true;
-                    }
-                }
+            if (result != null) {
+                return true;
             }
-        }
-        if (wasFound) {
-            size--;
-            this.elementData[size] = null;
-            return true;
         }
         return false;
     }
@@ -539,6 +495,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
+        //TODO Should I copy SubList subcalss from the ArrayList?
         if(fromIndex > toIndex || fromIndex < 0 || toIndex > size-1) {
             throw new IndexOutOfBoundsException();
         }
