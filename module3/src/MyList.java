@@ -4,7 +4,6 @@ import java.util.*;
  * Created by yurii.pyvovarenko on 11/28/2021.
  */
 public class MyList<T> implements List<T>, Iterable<T> {
-    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
     private static final int DEFAULT_CAPACITY = 10;
     private static final int GROW_FACTOR = 1;
 
@@ -12,8 +11,8 @@ public class MyList<T> implements List<T>, Iterable<T> {
     private int size = 0;
     private int capacity = DEFAULT_CAPACITY;
 
-    MyList() {
-        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+    public MyList() {
+        this.elementData = new Object[DEFAULT_CAPACITY];
     }
 
     /**
@@ -35,10 +34,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean isEmpty() {
-        if (size < 1) {
-            return true;
-        }
-        return false;
+        return size < 1;
     }
 
     /**
@@ -58,7 +54,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean contains(Object o) {
-        return this.indexOf(o) > -1;
+        return indexOf(o) > -1;
     }
 
     /**
@@ -67,35 +63,8 @@ public class MyList<T> implements List<T>, Iterable<T> {
      * @return an iterator over the elements in this list in proper sequence
      */
     @Override
-    public Iterator iterator() {
-        Iterator<T> it = new Iterator<T>() {
-
-            private int currentIndex = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentIndex < size && elementData[currentIndex] != null;
-            }
-
-            @Override
-            public T next() {
-                return (T) elementData[currentIndex++];
-            }
-
-            /**
-             * this method is unsafe in multi-threaded cases
-             */
-            @Override
-            public void remove() {
-                if (currentIndex >= size || size < 1) {
-                    throw new IndexOutOfBoundsException();
-                }
-                for (int i = currentIndex; i < size-1; i++) {
-                    elementData[i] = elementData[i+1];
-                }
-                size--;
-            }
-        };
+    public Iterator<T> iterator() {
+        Iterator<T> it = new MyListIterator();
         return it;
     }
 
@@ -159,11 +128,8 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean remove(Object o) {
-        if (this.indexOf(o) > -1) {
-            Object result = remove(this.indexOf(o));
-            if (o == null) {
-                return true;
-            }
+        if (indexOf(o) > -1) {
+            Object result = remove(indexOf(o));
             if (result != null) {
                 return true;
             }
@@ -262,6 +228,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
         }
         this.size = 0;
         this.capacity = DEFAULT_CAPACITY;
+        //this.elementData = new Object[DEFAULT_CAPACITY]; if I uncomment this, then we cannot support operations like list.subList(from, to).clear();...
     }
 
     /**
@@ -276,9 +243,8 @@ public class MyList<T> implements List<T>, Iterable<T> {
     public T get(int index) {
         if (index < size) {
             return (T) this.elementData[index];
-        } else {
-            throw new IndexOutOfBoundsException();
         }
+        throw new IndexOutOfBoundsException();
     }
 
     /**
@@ -305,9 +271,8 @@ public class MyList<T> implements List<T>, Iterable<T> {
             T previous = (T) this.elementData[index];
             this.elementData[index] = element;
             return previous;
-        } else {
-            throw new IndexOutOfBoundsException();
         }
+        throw new IndexOutOfBoundsException();
     }
 
     /**
@@ -380,15 +345,16 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public int indexOf(Object o) {
-        for(int i = 0; i < size; i++) {
-            if (o != null) {
+        if (o != null) {
+            for (int i = 0; i < size; i++) {
                 if (o.equals(elementData[i])) {
                     return i;
                 }
-            } else {
-                if (elementData[i] == null) {
-                    return i;
-                }
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            if (elementData[i] == null) {
+                return i;
             }
         }
         return -1;
@@ -413,15 +379,16 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public int lastIndexOf(Object o) {
-        for (int i = size - 1; i > 0; i--) {
-            if (o != null) {
+        if (o != null) {
+            for (int i = size - 1; i > 0; i--) {
                 if (o.equals(elementData[i])) {
                     return i;
                 }
-            } else {
-                if (elementData[i] == null) {
-                    return i;
-                }
+            }
+        }
+        for (int i = size - 1; i > 0; i--) {
+            if (elementData[i] == null) {
+                return i;
             }
         }
         return -1;
@@ -495,11 +462,12 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        //TODO Should I copy SubList subcalss from the ArrayList?
+        //I should not copy SubList subcalss from the ArrayList
         if(fromIndex > toIndex || fromIndex < 0 || toIndex > size-1) {
             throw new IndexOutOfBoundsException();
         }
         List<T> result = new MyList<>();
+        //we can use System.arraycopy(elementData, 0, a, 0, size);
         for (int i = fromIndex; i < toIndex; i++) {
             result.add((T) this.elementData[i]);
         }
@@ -528,17 +496,17 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public boolean retainAll(Collection<?> c) {
-        if (c.size() == 0) {
+        if (c.isEmpty()) {
             return false;
         }
         boolean wasChanged = false;
         int i = 0;
         while (i < size) {
-            if (!c.contains(elementData[i])) {
+            if (c.contains(elementData[i])) {
+                i++;
+            } else {
                 this.remove(i);
                 wasChanged = true;
-            } else {
-                i++;
             }
         }
         return wasChanged;
@@ -693,5 +661,34 @@ public class MyList<T> implements List<T>, Iterable<T> {
             result.append(elementData[i].toString());
         }
         return result.toString();
+    }
+
+    private class MyListIterator implements Iterator<T> {
+        private int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < size && elementData[currentIndex] != null;
+        }
+
+        @Override
+        public T next() {
+            System.out.println("currentIndex = "+currentIndex);
+            return (T) elementData[currentIndex++];
+        }
+
+        /**
+         * this method is unsafe in multi-threaded cases
+         */
+        @Override
+        public void remove() {
+            if (currentIndex >= size || size < 1) {
+                throw new IndexOutOfBoundsException();
+            }
+            for (int i = currentIndex; i < size - 1; i++) {
+                elementData[i] = elementData[i + 1];
+            }
+            size--;
+        }
     }
 }
