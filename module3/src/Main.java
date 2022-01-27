@@ -34,6 +34,7 @@ public class Main {
         System.out.println("TESTING: 2. Custom List implementation");
         MyList<Integer> myList = new MyList<>();
         System.out.println("isEmpty = " + myList.isEmpty());
+        myList.add(1111);
         myList.add(1);
         System.out.println("1 isEmpty = " + myList.isEmpty());
         myList.add(2);
@@ -140,5 +141,23 @@ public class Main {
         Integer[] integerArray = {};
         integerArray = myList.toArray(integerArray);
         System.out.println("integerArray = myList.toArray(integerArray) = "+ Arrays.toString(integerArray));
+
+        myList.add(4);
+        myList.add(5);
+        System.out.println("myList = " + myList);
+
+        myList.set(3,4);
+        System.out.println("myList after myList.set(3,4) = " + myList);
+
+        List<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        arrayList.add(4);
+        arrayList.add(5);
+        System.out.println("arrayList = " + arrayList);
+
+        arrayList.set(3,4);
+        System.out.println("arrayList after arrayList.set(3,4) = " + arrayList);
     }
 }

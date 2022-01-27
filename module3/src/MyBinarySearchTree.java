@@ -14,14 +14,14 @@ public class MyBinarySearchTree<T extends Comparable<T>> {
         root = insertRecursively(root, value);
     }
 
-    Node insertRecursively(Node<T> root, T value) {
+    Node<T> insertRecursively(Node<T> root, T value) {
         //tree is empty
         if (root == null) {
             root = new Node(value);
             return root;
         }
         //traverse the tree
-        if (value.compareTo(root.getValue()) < 0) { //insert in the left subtree
+        if (value.compareTo(root.getValue()) <= 0) { //insert in the left subtree
             root.setLeft(insertRecursively(root.getLeft(), value));
             System.out.println("insert left. value = " + value + ", root.getValue() = " + root.getValue());
         } else if (value.compareTo(root.getValue()) > 0) {    //insert in the right subtree
@@ -45,9 +45,6 @@ public class MyBinarySearchTree<T extends Comparable<T>> {
         if(left==null && right==null) {
             //System.out.println("LEAF: "+root.getValue());
             return valueStringBuilder.append(SPACE).append(root.getValue());
-        } else if (right == null && left != null) {
-            //System.out.println("Only left branch to get. Current value = "+root.getValue());
-            return toStringBuilderRecursively(left, valueStringBuilder).append(SPACE).append(root.getValue());
         } else if (left == null && right != null) {
             //System.out.println("Only right branch to get. Current value = " + root.getValue());
             return toStringBuilderRecursively(right, valueStringBuilder.append(SPACE).append(root.getValue()));
@@ -57,9 +54,9 @@ public class MyBinarySearchTree<T extends Comparable<T>> {
                         .append(SPACE).append(root.getValue()));
     }
 
-    class Node<T> implements Comparable<T> {
+    private static class Node<T> {
         private T value;
-        Node left, right;
+        Node<T> left, right;
 
         public Node(T data) { //new node is added as a leaf
             value = data;
@@ -71,29 +68,24 @@ public class MyBinarySearchTree<T extends Comparable<T>> {
             return value;
         }
 
-        public Node getLeft() {
+        public Node<T> getLeft() {
             return left;
         }
 
-        public void setLeft(Node left) {
+        public void setLeft(Node<T> left) {
             this.left = left;
         }
 
-        public Node getRight() {
+        public Node<T> getRight() {
             return right;
         }
 
-        public void setRight(Node right) {
+        public void setRight(Node<T> right) {
             this.right = right;
         }
 
         public String toString() {
             return value.toString();
-        }
-
-        @Override
-        public int compareTo(T o) {
-            return this.compareTo(o);
         }
     }
 }
