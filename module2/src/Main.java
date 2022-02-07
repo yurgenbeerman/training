@@ -16,7 +16,7 @@ public class Main {
         System.out.println(Arrays.toString(Helpers.joinTwoSortedArrays(array1,array2))+"\n");
 
         //2. Реверс строки с помощью стека
-        System.out.println(Helpers.revertStringUsingStack("abcdefg")+"\n");
+        System.out.println(Helpers.revertStringNotUsingStack("abcdefg")+"\n");
 
         //3. Реверс первых N элементов очереди
         int max = 12;
