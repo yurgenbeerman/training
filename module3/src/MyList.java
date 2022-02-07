@@ -241,7 +241,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public T get(int index) {
-        if (index < size) {
+        if (index >= 0 && index < size) {
             return (T) this.elementData[index];
         }
         throw new IndexOutOfBoundsException();
@@ -267,7 +267,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public T set(int index, T element) {
-        if (index < size) {
+        if (index >= 0 && index < size) {
             T previous = (T) this.elementData[index];
             this.elementData[index] = element;
             return previous;
@@ -314,7 +314,7 @@ public class MyList<T> implements List<T>, Iterable<T> {
      */
     @Override
     public T remove(int index) {
-        if (index < 0 || index >= size || size < 1) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(); //we can throw UnsupportedOperationException (or another exception) for case when size < 1
         }
         T toReturn = (T) elementData[index];

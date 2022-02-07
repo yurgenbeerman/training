@@ -17,7 +17,7 @@ public class MyBinarySearchTree<T extends Comparable<T>> {
     Node<T> insertRecursively(Node<T> root, T value) {
         //tree is empty
         if (root == null) {
-            root = new Node(value);
+            root = new Node<T>(value);
             return root;
         }
         //traverse the tree
